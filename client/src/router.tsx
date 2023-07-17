@@ -7,6 +7,8 @@ import SignIn from './Page/signIn';
 import User from './Page/User';
 import ChatList from './Page/chatList';
 import Chatting from './Page/chatting';
+import Kakao from './Components/Login/Kakao';
+import Google from './Components/Login/Google';
 
 export const routers: RemixRouter = createBrowserRouter([
   {
@@ -16,6 +18,14 @@ export const routers: RemixRouter = createBrowserRouter([
       {
         index: true,
         element: <Main />,
+      },
+      {
+        path: '/kakao',
+        element: <Kakao />,
+      },
+      {
+        path: '/google',
+        element: <Google />,
       },
       {
         path: '/signup',
