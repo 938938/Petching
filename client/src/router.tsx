@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { createBrowserRouter } from 'react-router-dom';
 import { Router as RemixRouter } from '@remix-run/router/dist/router';
 import GeneralLayout from './Layout/GeneraLayout';
@@ -7,12 +8,13 @@ import SignIn from './Page/signIn';
 import User from './Page/User';
 import ChatList from './Page/chatList';
 import Chatting from './Page/chatting';
-import Kakao from './Components/Login/Kakao';
+import KakaoLogin from './Components/Login/KakaoLogin';
 import Peacock from './Page/Peacock';
 import PeacockDetail from './Page/peacockDetail';
-import Google from './Components/Login/Google';
+import GoogleLogin from './Components/Login/GoogleLogin';
 import CareList from './Page/CareList';
-
+import CareListDetail from './Page/CareListDetail';
+import CareListAsk from './Page/CareListAsk';
 export const routers: RemixRouter = createBrowserRouter([
   {
     path: '/',
@@ -24,11 +26,11 @@ export const routers: RemixRouter = createBrowserRouter([
       },
       {
         path: '/kakao',
-        element: <Kakao />,
+        element: <KakaoLogin />,
       },
       {
         path: '/google',
-        element: <Google />,
+        element: <GoogleLogin />,
       },
       {
         path: '/signup',
@@ -57,6 +59,14 @@ export const routers: RemixRouter = createBrowserRouter([
       {
         path: '/carelist',
         element: <CareList />,
+      },
+      {
+        path: '/carelistdetail',
+        element: <CareListDetail />,
+      },
+      {
+        path: '/carelistask',
+        element: <CareListAsk />,
       },
     ],
   },

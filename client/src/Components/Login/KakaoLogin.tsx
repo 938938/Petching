@@ -1,40 +1,26 @@
-import React from 'react';
 import { useEffect } from 'react';
-import axios from 'axios';
-// import { setCookie } from "../components/social/Cookie";
 import { useNavigate } from 'react-router-dom';
 
 const KakaoLogin = () => {
-  const goToMain = () => {
-    navigate('/');
-  };
   const navigate = useNavigate();
-  const code: string | null = new URL(window.location.href).searchParams.get(
-    'code',
-  );
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
-    const kakao = async () => {
-      return await axios
-        .get(`${BASE_URL}/api/v1/members/kakaoLogin?code=${code}`)
+    const url = new URL(window.location.href);
+    const accessToken = url.searchParams.get('access_token');
+    const refreshToken = url.searchParams.get('refresh_token');
 
-        .then(response => {
-          const data = response.data;
-          if (data.message === 'success') {
-            localStorage.setItem('TOKEN', data.token);
-            goToMain();
-            alert('로그인 성공');
-          } else {
-            goToMain();
-            alert('로그인 실패');
-          }
-        });
-    };
-    if (code) {
-      kakao();
+    if (accessToken) {
+      localStorage.setItem('ACCESS_TOKEN', accessToken);
     }
-  }, [code, navigate]);
+
+    if (refreshToken) {
+      const date = new Date();
+      date.setDate(date.getDate() + 7);
+      document.cookie = `REFRESH_TOKEN=${refreshToken}; expires=${date.toUTCString()}`;
+    }
+
+    navigate('/', { replace: true });
+  }, [navigate]);
 
   return <div></div>;
 };
