@@ -1,5 +1,7 @@
+/* eslint-disable */
 import { User, SignupData } from '../Util/types';
 import axios from 'axios';
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const checkUser = async () => {
   // 백엔드 API 호출하여 DB에서 유저 정보 가져오기
@@ -11,12 +13,11 @@ export const checkUser = async () => {
 export const signUpUser = async (data: SignupData) => {
   try {
     const response = await axios.post(
-      'https://5ad6-118-32-224-80.ngrok-free.app/users/sign-up',
+      `https://server.petching.net/users/sign-up`,
       data,
       {
         headers: {
           'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': '69420',
         },
       },
     );
@@ -30,39 +31,37 @@ export const signUpUser = async (data: SignupData) => {
 export const checkEmail = async (email: string) => {
   try {
     const response = await axios.post(
-      'https://fcf3-118-32-224-80.ngrok-free.app/users/sign-up',
+      `https://server.petching.net/users/check-id`,
       { email },
       {
         headers: {
           'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': '69420',
         },
       },
     );
 
-    return response.data.isDuplicate;
+    console.log(response);
+    return response.data;
   } catch (error) {
-    // Handle error if the request fails
     console.error(error);
     throw error;
   }
 };
 
-export const checkNickname = async (nickname: string) => {
+export const checkNickname = async (nickName: string) => {
   try {
     const response = await axios.post(
-      'https://fcf3-118-32-224-80.ngrok-free.app/users/sign-up',
-      { nickname },
+      `https://server.petching.net/users/check-nick`,
+      { nickName },
       {
         headers: {
           'Content-Type': 'application/json',
         },
       },
     );
-
-    return response.data.isDuplicate;
+    console.log(response);
+    return response.data;
   } catch (error) {
-    // Handle error if the request fails
     console.error(error);
     throw error;
   }
