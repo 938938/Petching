@@ -10,10 +10,12 @@ import ChatList from './Page/chatList';
 import Chatting from './Page/chatting';
 import KakaoLogin from './Components/Login/KakaoLogin';
 import Peacock from './Page/Peacock';
-import PeacockDetail from './Page/peacockDetail';
+// import PeacockDetail from './Page/peacockDetail';
+import PeacockWrite from './Page/peacockWrite';
 import GoogleLogin from './Components/Login/GoogleLogin';
 import CareList from './Page/CareList';
-
+import CareListDetail from './Page/CareListDetail';
+import CareListAsk from './Page/CareListAsk';
 export const routers: RemixRouter = createBrowserRouter([
   {
     path: '/',
@@ -53,11 +55,23 @@ export const routers: RemixRouter = createBrowserRouter([
       },
       {
         path: '/peacock',
-        element: <PeacockDetail />,
+        element: <Peacock />,
+      },
+      {
+        path: '/peacock/write',
+        element: <PeacockWrite />,
       },
       {
         path: '/carelist',
         element: <CareList />,
+      },
+      {
+        path: '/carelistdetail',
+        element: <CareListDetail />,
+      },
+      {
+        path: '/carelistask',
+        element: <CareListAsk />,
       },
     ],
   },

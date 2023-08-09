@@ -2,43 +2,40 @@ import { useState } from 'react';
 import { useDeleteMyPet } from '../../Hook/useDeleteMyPet';
 import { MyPetsType } from './MyPets';
 import { usePatchMyPet } from '../../Hook/usePatchMyPet';
+import { postImgHandler } from '../../Util/postImg';
 
 const PetCard: React.FC<MyPetsType> = ({
-  // img,
   name,
   species,
   gender,
   age,
-  petUmgUrl,
+  petImgUrl,
   significant,
-  // weight,
-  // vaccination,
-  // etc,
+  myPetId,
+  userId,
 }) => {
-  const { handlerPatchMyPet } = usePatchMyPet();
-  const { handlerDeleteMyPet } = useDeleteMyPet();
+  const { handlerPatchMyPet } = usePatchMyPet(userId!);
+  const { handlerDeleteMyPet } = useDeleteMyPet(myPetId!, userId!);
   const [onEdit, setOnEdit] = useState<boolean>(false);
-  const [changeImg, setChangeImg] = useState<string>(petUmgUrl);
+  const [changeImg, setChangeImg] = useState<string>(petImgUrl);
   const [changeName, setChangeName] = useState<string>(name);
   const [changeSpecies, setChangeSpecies] = useState<string>(species);
   const [changeGender, setChangeGender] = useState<string>(gender);
   const [changeAge, setChangeAge] = useState<number>(age);
-  // const [changeWeight, setChangeWeight] = useState<string>(weight || '');
-  // const [changeVaccination, setChangeVaccination] = useState<string>(
-  //   vaccination || '',
-  // );
   const [changeSignificant, setChangeSignificant] =
     useState<string>(significant);
+  const [imgFiles, setImgFiles] = useState<File>();
 
-  const changeImgHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeImgHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.currentTarget;
     const files = (target.files as FileList)[0];
     if (!files) return;
     const reader = new FileReader();
+    reader.readAsDataURL(files);
     reader.onloadend = () => {
       setChangeImg(reader.result as string);
     };
-    reader.readAsDataURL(files);
+    setImgFiles(files);
   };
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,10 +49,6 @@ const PetCard: React.FC<MyPetsType> = ({
         return setChangeAge(Number(value));
       case 'gender':
         return setChangeGender(value);
-      // case 'weight':
-      //   return setChangeWeight(value);
-      // case 'vaccination':
-      //   return setChangeVaccination(value);
       case 'significant':
         return setChangeSignificant(value);
       default:
@@ -63,17 +56,17 @@ const PetCard: React.FC<MyPetsType> = ({
     }
   };
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     handlerPatchMyPet({
       name: changeName,
       species: changeSpecies,
       gender: changeGender,
       age: changeAge,
-      petUmgUrl: changeImg,
+      petImgUrl: imgFiles
+        ? await postImgHandler(imgFiles, 'profiles')
+        : petImgUrl,
       significant: changeSignificant,
-      // weight: changeWeight,
-      // vaccination: changeVaccination,
-      // etc: changeSignificant,
+      myPetId: myPetId,
     });
     setOnEdit(false);
   };
@@ -105,7 +98,7 @@ const PetCard: React.FC<MyPetsType> = ({
           </label>
         ) : (
           <img
-            src={petUmgUrl}
+            src={petImgUrl}
             alt="반려동물의 이미지"
             className="w-32 h-32 rounded"
           />
